@@ -20,10 +20,13 @@
             </div>
             <div class="form-check">
                 {{ form.accept(class_='from-check-input')}}
-                <label for="">Accept Terms and Conditions</label>
+                <label for="accept">Accept Terms and Conditions</label>
+            </div>
+            <div class="form-group">
+                {{ render_field(form.honeypot) }}
             </div>
             <button type="submit" class="btn btn-primary" name="button">
-                Login
+                Sign up
             </button>
         </form>
     </div>
