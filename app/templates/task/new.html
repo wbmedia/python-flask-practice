@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% from 'helpers/_forms.html' import render_field %}
+
+{% block container %}
+    <div class="col-md-12 col-md-offset-1">
+        <h3>New task</h3>
+        <form class=""  method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+                {{ render_field(form.title, class='form-control', placeholder='Add Task Title') }}
+            </div>
+            <div class="form-group">
+                {{ render_field(form.description, class='form-control', placeholder='Add Description') }}
+            </div>
+
+            <button type="submit" class="btn btn-primary" name="button">
+                Add Task
+            </button>
+        </form>
+    </div>
+{% endblock %}

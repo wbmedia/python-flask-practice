@@ -2,11 +2,10 @@ from flask import Blueprint
 from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_user, logout_user, login_required, current_user
 
-from .models import User
-from .forms import LoginForm, RegisterForm
+from .models import User, Task
+from .forms import LoginForm, RegisterForm, TaskForm
 from .consts import *
 from . import login_manager
-
 
 page = Blueprint('page', __name__)
 
@@ -30,7 +29,6 @@ def logout():
 
 @page.route('/login', methods=['GET', 'POST'])
 def login():
-
     if current_user.is_authenticated:
         return redirect(url_for('.tasks'))
 
@@ -50,7 +48,6 @@ def login():
 
 @page.route('/register', methods=['GET', 'POST'])
 def register():
-
     if current_user.is_authenticated:
         return redirect(url_for('.tasks'))
 
@@ -76,3 +73,16 @@ def index():
 @login_required
 def tasks():
     return render_template('task/list.html', title='Tasks')
+
+
+@page.route('/tasks/new', methods=['GET', 'POST'])
+@login_required
+def new_task():
+    form = TaskForm(request.form)
+
+    if request.method == 'POST' and form.validate():
+        task = Task.create_element(form.title, form.description,current_user.id)
+        if task:
+            flash(TASK_CREATED)
+
+    return render_template('task/new.html', title='New Task', form=form)
