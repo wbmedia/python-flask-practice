@@ -82,14 +82,14 @@ def new_task():
     form = TaskForm(request.form)
 
     if request.method == 'POST' and form.validate():
-        task = Task.create_element(form.title, form.description,current_user.id)
+        task = Task.create_element(form.title, form.description, current_user.id)
         if task:
             flash(TASK_CREATED)
 
     return render_template('task/new.html', title='New Task', form=form)
 
 
-@page.route('/task/edit/<int:task_id>', methods=['GET', 'POST'])
+@page.route('/tasks/edit/<int:task_id>', methods=['GET', 'POST'])
 @login_required
 def edit_task(task_id):
     task = Task.query.get_or_404(task_id)
@@ -103,3 +103,16 @@ def edit_task(task_id):
             flash(TASK_UPDATED)
 
     return render_template('task/edit.html', title='Edit Task', form=form)
+
+
+@page.route('/tasks/delete/<int:task_id>', methods=['GET', 'DELETE'])
+def delete_task(task_id):
+    task = Task.query.get_or_404(task_id)
+
+    if task.user_id != current_user.id:
+        abort(404)
+
+    if Task.delete_element(task.id):
+        flash(TASK_DELETED)
+
+    return redirect(url_for('.tasks'))

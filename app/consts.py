@@ -8,3 +8,5 @@ ERROR_USER_OR_PASSWORD = 'Wrong User or Password.'
 TASK_CREATED = 'Task Created Success.'
 
 TASK_UPDATED = 'Task Updated Success.'
+
+TASK_DELETED = 'Task Deleted Success'
