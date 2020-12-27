@@ -6,3 +6,5 @@ LOGOUT = 'Logout Success.'
 ERROR_USER_OR_PASSWORD = 'Wrong User or Password.'
 
 TASK_CREATED = 'Task Created Success.'
+
+TASK_UPDATED = 'Task Updated Success.'

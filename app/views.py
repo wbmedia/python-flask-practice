@@ -1,5 +1,5 @@
 from flask import Blueprint
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, url_for, abort
 from flask_login import login_user, logout_user, login_required, current_user
 
 from .models import User, Task
@@ -72,7 +72,8 @@ def index():
 @page.route('/tasks')
 @login_required
 def tasks():
-    return render_template('task/list.html', title='Tasks')
+    tasks = current_user.tasks
+    return render_template('task/list.html', title='Tasks', tasks=tasks)
 
 
 @page.route('/tasks/new', methods=['GET', 'POST'])
@@ -86,3 +87,19 @@ def new_task():
             flash(TASK_CREATED)
 
     return render_template('task/new.html', title='New Task', form=form)
+
+
+@page.route('/task/edit/<int:task_id>', methods=['GET', 'POST'])
+@login_required
+def edit_task(task_id):
+    task = Task.query.get_or_404(task_id)
+
+    if task.user_id != current_user.id:
+        abort(404)
+    form = TaskForm(request.form, obj=task)
+    if request.method == 'POST' and form.validate():
+        task = Task.update_element(task.id, form.title.data, form.description.data)
+        if task:
+            flash(TASK_UPDATED)
+
+    return render_template('task/edit.html', title='Edit Task', form=form)

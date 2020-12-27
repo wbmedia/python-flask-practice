@@ -1,6 +1,37 @@
 {% extends 'layout.html' %}
 
 {% block container %}
-    <h2>List of Task's</h2>
+
+    <div class="d-inline-block">
+        <h2>List of Task's</h2>
+        <a class="btn btn-link" href="{{url_for('.new_task')}}">New Task</a>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for task in tasks%}
+            <tr>
+                <td>{{task.id}}</td>
+                <td>{{task.title}}}</td>
+                <td>{{task.little_description}}}</td>
+                <td>
+                    <a href="{{url_for('.edit_task', task_id=task.id)}}" class="btn btn-primary d-inline-block">Edit</a>
+                    <a href="" class="btn btn-danger d-inline-block" >Delete</a>
+                </td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+
+    </table>
 
 {% endblock %}
